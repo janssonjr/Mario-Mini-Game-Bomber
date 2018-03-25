@@ -17,11 +17,13 @@ public class Tile : MonoBehaviour {
     bool wasPressed;
     bool myIsInsideGoal;
     bool myHasScored;
+    Goal myGoalHover;
 	// Use this for initialization
 	void Start () {
         wasPressed = false;
         myIsInsideGoal = false;
         myHasScored = false;
+        myGoalHover = null;
 	}
 
     public void Init(Vector2 aWalkDirection, TileType aTileType)
@@ -44,13 +46,8 @@ public class Tile : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (myHasScored == true)
-            return;
-        myLifetime -= GameManager.DeltaTime;
-        if(myLifetime <= 0)
-        {
-            GameEventManager.GameLost();
-        }
+
+
         Vector2 position = transform.position;
         transform.position = position + myWalDirection * 2f * GameManager.DeltaTime;
 	    if(wasPressed)
@@ -58,8 +55,15 @@ public class Tile : MonoBehaviour {
             Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             newPos.z = -1;
             transform.position = newPos;
-        }	
-	}
+        }
+        if (myHasScored == true)
+            return;
+        myLifetime -= GameManager.DeltaTime;
+        if (myLifetime <= 0)
+        {
+            GameEventManager.GameLost();
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D aCollider)
     {
@@ -68,13 +72,9 @@ public class Tile : MonoBehaviour {
             Goal goal = aCollider.GetComponent<Goal>();
             if (goal == null)
                 return;
-            Debug.Log("OnTriggerEnter");
-            if (goal.myGoalType == myTileType)
-            {
-                Debug.Log("IsInsideGooal");
-                myIsInsideGoal = true;
-            }
-            Debug.Log("Collision Enter");
+
+            myIsInsideGoal = true;
+            myGoalHover = goal;
         }
         else
         {
@@ -84,7 +84,6 @@ public class Tile : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("MyWalkDirection: " + myWalDirection);
         foreach(ContactPoint2D cp in collision.contacts)
         {
             myWalDirection = Vector2.Reflect(myWalDirection, cp.normal);
@@ -109,11 +108,8 @@ public class Tile : MonoBehaviour {
         Goal goal = aCollider.GetComponent<Goal>();
         if (goal == null)
             return;
-        if (goal.myGoalType == myTileType)
-        {
-            myIsInsideGoal = false;
-        }
-        Debug.Log("Collision Exit");
+        myIsInsideGoal = false;
+        myGoalHover = null;
     }
 
     void OnMouseDown()
@@ -121,8 +117,7 @@ public class Tile : MonoBehaviour {
         if (myHasScored == true)
             return;
         wasPressed = true;
-        GetComponent<BoxCollider2D>().enabled = false;
-        Debug.Log("Mouse Pressed!");
+        //GetComponent<BoxCollider2D>().enabled = false;
     }
 
     void OnMouseUp()
@@ -130,11 +125,20 @@ public class Tile : MonoBehaviour {
         if (myHasScored == true)
             return;
         wasPressed = false;
-        if(myIsInsideGoal == true)
+        if(myIsInsideGoal == true && myGoalHover != null)
         {
-            GameEventManager.ScorePoint(myTileType, 1);
-            myHasScored = true;
+            if(myGoalHover.myGoalType == myTileType)
+            {
+                GameEventManager.ScorePoint(myTileType, 1);
+                myHasScored = true;
+                transform.position = myGoalHover.transform.position;
+                myGoalHover = null;
+            }
+            else
+            {
+                GameEventManager.GameLost();
+            }
         }
-        GetComponent<BoxCollider2D>().enabled = true;
+        //GetComponent<BoxCollider2D>().enabled = true;
     }
 }

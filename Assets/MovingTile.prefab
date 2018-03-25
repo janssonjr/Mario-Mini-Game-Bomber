@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114875075785343088}
   - component: {fileID: 50362972141257578}
   - component: {fileID: 61455347744611304}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MovingTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
