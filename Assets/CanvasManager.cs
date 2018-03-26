@@ -6,7 +6,8 @@ using UnityEngine;
 public enum Panel
 {
     InGamePanel,
-    LosePanel
+    LosePanel,
+    MainMenuPanel
 }
 
 public class CanvasManager : MonoBehaviour {
@@ -25,10 +26,16 @@ public class CanvasManager : MonoBehaviour {
 
     private void OnGameStateEvent(GameEventManager.GameStateEvent aEvent)
     {
-        if(aEvent.myGameState == GameStateEnum.Lose)
+        if(aEvent.myNewState == GameStateEnum.Lose)
         {
             panels[(int)Panel.LosePanel].SetActive(true);
             //panels[(int)Panel.InGamePanel].SetAc
+        }
+        else if(aEvent.myNewState == GameStateEnum.Playing && aEvent.myOldState == GameStateEnum.MainMenu)
+        {
+            panels[(int)Panel.MainMenuPanel].SetActive(false);
+            panels[(int)Panel.InGamePanel].SetActive(true);
+
         }
     }
 }

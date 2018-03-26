@@ -5,7 +5,7 @@ Shader "TJ/Bomber"
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-	_Color("Tint", Color) = (1,1,1,1)
+		[PerRendererData]_Color("Tint", Color) = (1,1,1,1)
 
 		_StencilComp("Stencil Comparison", Float) = 8
 		_Stencil("Stencil ID", Float) = 0
@@ -16,6 +16,7 @@ Shader "TJ/Bomber"
 		_ColorMask("Color Mask", Float) = 15
 
 		_NoiseTex("Noise Texture", 2D) = "White" {}
+		[PerRendererData]_Threshold("Threshold", Range(0, 1)) = 0
 
 		[Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip("Use Alpha Clip", Float) = 0
 	}
@@ -82,7 +83,6 @@ Shader "TJ/Bomber"
 	fixed4 _TextureSampleAdd;
 	float4 _ClipRect;
 	
-	sampler2D _NoiseTex;
 
 	v2f vert(appdata_t v)
 	{
@@ -99,12 +99,14 @@ Shader "TJ/Bomber"
 	}
 
 	sampler2D _MainTex;
-
+	sampler2D _NoiseTex;
+	float _Threshold;
 	fixed4 frag(v2f IN) : SV_Target
 	{
 		half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
-		color = IN.texcoord;
-		float sampledNoise = tex2D(boundNoiseTexture, i.uv).x;
+		// color = IN.texcoord;
+		float sampledNoise = tex2D(_NoiseTex, IN.texcoord).x;
+		color.a *= step(_Threshold, sampledNoise);
 
 #ifdef UNITY_UI_CLIP_RECT
 		color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);

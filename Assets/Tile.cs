@@ -18,6 +18,12 @@ public class Tile : MonoBehaviour {
     bool myIsInsideGoal;
     bool myHasScored;
     Goal myGoalHover;
+
+    public TileType MyTileType
+    {
+        get { return myTileType; }
+    }
+
 	// Use this for initialization
 	void Start () {
         wasPressed = false;
@@ -129,7 +135,7 @@ public class Tile : MonoBehaviour {
         {
             if(myGoalHover.myGoalType == myTileType)
             {
-                GameEventManager.ScorePoint(myTileType, 1);
+                GameEventManager.ScorePoint(this, 1);
                 myHasScored = true;
                 transform.position = myGoalHover.transform.position;
                 myGoalHover = null;

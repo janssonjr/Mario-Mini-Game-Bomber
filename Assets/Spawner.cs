@@ -17,8 +17,7 @@ public class Spawner : MonoBehaviour {
     bool isRunning;
 	// Use this for initialization
 	void Start () {
-        isRunning = true;
-        StartCoroutine(Spawn());
+       
 	}
 
     private void OnEnable()
@@ -34,9 +33,14 @@ public class Spawner : MonoBehaviour {
 
     private void OnGameStateChange(GameEventManager.GameStateEvent obj)
     {
-        if(obj.myGameState == GameStateEnum.Lose)
+        if(obj.myNewState == GameStateEnum.Lose)
         {
             isRunning = false;
+        }
+        else if(obj.myNewState == GameStateEnum.Playing)
+        {
+            isRunning = true;
+            StartCoroutine(Spawn());
         }
     }
 

@@ -6,7 +6,8 @@ using UnityEngine;
 public enum GameStateEnum
 {
     Playing,
-    Lose
+    Lose,
+    MainMenu
 }
 
 public class GameManager : MonoBehaviour {

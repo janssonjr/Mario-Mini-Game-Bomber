@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: BlinkEffect
+  m_Name: DessolveEffect
   m_Shader: {fileID: 4800000, guid: 4afa13da49f936d439fb872227814697, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
@@ -85,6 +85,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
+    - _Threshold: 1
     - _UVSec: 0
     - _UseUIAlphaClip: 0
     - _ZWrite: 1

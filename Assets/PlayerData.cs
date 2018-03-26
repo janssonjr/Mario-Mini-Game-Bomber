@@ -3,19 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour {
-
-    //private static PlayerData myInstance;
-
-    //public static PlayerData Instance
-    //{
-    //    get
-    //    {
-    //        if (myInstance == null)
-    //            myInstance = new PlayerData();
-    //        return myInstance;
-    //    }
-    //}
+public class PlayerData : MonoBehaviour
+{
 
     public int myScore;
 

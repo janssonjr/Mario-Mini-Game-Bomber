@@ -7,13 +7,14 @@ public class GameEventManager : MonoBehaviour {
 
     public class GameEvent
     {
-        public TileType myTileType;
+        public Tile myScoredTile;
         public int myScore;
     }
 
     public class GameStateEvent
     {
-        public GameStateEnum myGameState;
+        public GameStateEnum myNewState;
+        public GameStateEnum myOldState;
     }
 
     public static Action<GameEvent> OnGameEvent;
@@ -33,12 +34,18 @@ public class GameEventManager : MonoBehaviour {
     public static void GameLost()
     {
         if (OnGameStateEvent != null)
-            OnGameStateEvent.Invoke(new GameStateEvent { myGameState = GameStateEnum.Lose});
+            OnGameStateEvent.Invoke(new GameStateEvent { myNewState = GameStateEnum.Lose, myOldState = GameStateEnum.Playing});
     }
 
-    public static void ScorePoint(TileType aTileType, int aScoreAmount)
+    public static void StartGame()
+    {
+        if (OnGameStateEvent != null)
+            OnGameStateEvent.Invoke(new GameStateEvent { myNewState = GameStateEnum.Playing, myOldState = GameStateEnum.MainMenu});
+    }
+
+    public static void ScorePoint(Tile aTile, int aScoreAmount)
     {
         if (OnGameEvent != null)
-            OnGameEvent.Invoke(new GameEvent { myTileType = aTileType, myScore = aScoreAmount });
+            OnGameEvent.Invoke(new GameEvent { myScoredTile = aTile, myScore = aScoreAmount });
     }
 }
