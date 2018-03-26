@@ -55,7 +55,7 @@ public class Tile : MonoBehaviour {
 
 
         Vector2 position = transform.position;
-        transform.position = position + myWalDirection * 2f * GameManager.DeltaTime;
+        transform.position = position + myWalDirection * GameManager.DeltaTime;
 	    if(wasPressed)
         {
             Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114875075785343088}
   - component: {fileID: 50362972141257578}
   - component: {fileID: 61455347744611304}
-  - component: {fileID: 114675069267799370}
+  - component: {fileID: 114562127596992034}
   m_Layer: 8
   m_Name: MovingTile
   m_TagString: Untagged
@@ -89,7 +89,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.64, y: 0.64}
   m_EdgeRadius: 0
---- !u!114 &114675069267799370
+--- !u!114 &114562127596992034
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88b298192b9827e48a654dc41a74c3b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myDissolveMaterial: {fileID: 2100000, guid: 3bfe10e0f3f75864e887895a25066f28, type: 2}
+  myDissolveMaterial: {fileID: 0}
 --- !u!114 &114875075785343088
 MonoBehaviour:
   m_ObjectHideFlags: 1

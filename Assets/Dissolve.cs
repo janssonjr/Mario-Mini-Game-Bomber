@@ -6,13 +6,19 @@ public class Dissolve : MonoBehaviour {
 
     public Material myDissolveMaterial;
     MaterialPropertyBlock myMaterialProperty;
-    SpriteRenderer myRSpriteRenderer;
+    SpriteRenderer mySpriteRenderer;
     Renderer myRenderer;
-	// Use this for initialization
-	void Start () {
-        myMaterialProperty = new MaterialPropertyBlock();
-        myRSpriteRenderer = GetComponent<SpriteRenderer>();
-        myRenderer = GetComponent<Renderer>();
+    // Use this for initialization
+
+    private void OnEnable()
+    {
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
+        mySpriteRenderer.material = new Material(mySpriteRenderer.material);
+    }
+
+    void Start () {
+        //myMaterialProperty = new MaterialPropertyBlock();
+        //myRenderer = GetComponent<Renderer>();
 	}
 
     public void StartDissolve()
@@ -23,10 +29,10 @@ public class Dissolve : MonoBehaviour {
 	
     void ChangeDissolve(float newValue)
     {
-        myMaterialProperty.SetFloat("_Threshold", newValue);
-        float currentDissolve = myDissolveMaterial.GetFloat("_Threshold");
-        Debug.Log("New Value: " + newValue.ToString() + " CurrentThreshold: " + currentDissolve.ToString());
-        myRenderer.SetPropertyBlock(myMaterialProperty);
+        mySpriteRenderer.material.SetFloat("_Threshold", newValue);
+        //float currentDissolve = myDissolveMaterial.GetFloat("_Threshold");
+        //Debug.Log("New Value: " + newValue.ToString() + " CurrentThreshold: " + currentDissolve.ToString());
+        //myRenderer.SetPropertyBlock(myMaterialProperty);
     }
 
     void DissolveComplete()
@@ -36,9 +42,9 @@ public class Dissolve : MonoBehaviour {
 
     private void Update()
     {
-        myRenderer.GetPropertyBlock(myMaterialProperty);
-        myMaterialProperty.SetColor("_Color", myRSpriteRenderer.color);
-        myMaterialProperty.SetTexture("_MainTex", myRSpriteRenderer.sprite.texture);
-        myRenderer.SetPropertyBlock(myMaterialProperty);
+        //myRenderer.GetPropertyBlock(myMaterialProperty);
+        //myMaterialProperty.SetColor("_Color", myRSpriteRenderer.color);
+        //myMaterialProperty.SetTexture("_MainTex", myRSpriteRenderer.sprite.texture);
+        //myRenderer.SetPropertyBlock(myMaterialProperty);
     }
 }

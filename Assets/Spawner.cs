@@ -62,7 +62,7 @@ public class Spawner : MonoBehaviour {
             if (mySpawnDelay <= 0.5f)
                 mySpawnDelay = 0.5f;
             else
-                mySpawnDelay -= GameManager.DeltaTime * 5;
+                mySpawnDelay -= GameManager.DeltaTime * 1;
             //isRunning = false;
         }
 

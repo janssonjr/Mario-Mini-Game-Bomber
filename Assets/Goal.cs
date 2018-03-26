@@ -16,7 +16,7 @@ public class Goal : MonoBehaviour {
     {
         GameEventManager.OnGameStateEvent += OnGameStateEvent;
         GameEventManager.OnGameEvent += OnGmeEvent;
-        myMaxScoredObjects = 1;
+        myMaxScoredObjects = 5;
     }
 
     private void OnDisable()
