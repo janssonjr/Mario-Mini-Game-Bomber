@@ -90,7 +90,7 @@ public class Tile : MonoBehaviour {
     private void StartLowHealthTween()
     {
         myHasStartedLowHealthTween = true;
-        iTween.ScaleTo(gameObject, iTween.Hash("time", 0.6, "scale", new Vector3(1.5f, 1.5f, 1f), "easetype", iTween.EaseType.easeInOutSine, "looptype", iTween.LoopType.pingPong));
+        iTween.ScaleTo(gameObject, iTween.Hash("time", 0.6, "scale", new Vector3(2.5f, 2.5f, 1f), "easetype", iTween.EaseType.easeInOutSine, "looptype", iTween.LoopType.pingPong));
     }
 
     void OnTriggerEnter2D(Collider2D aCollider)
