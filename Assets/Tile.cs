@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +13,15 @@ public enum TileType
 public class Tile : MonoBehaviour {
 
     public float myLifetime;
+    float myStartLifeTime;
     TileType myTileType = TileType.Length;
     Vector2 myWalDirection;
     bool wasPressed;
     bool myIsInsideGoal;
     bool myHasScored;
+    bool myShouldUpdate;
     Goal myGoalHover;
+    bool myHasStartedLowHealthTween;
 
     public TileType MyTileType
     {
@@ -30,6 +34,9 @@ public class Tile : MonoBehaviour {
         myIsInsideGoal = false;
         myHasScored = false;
         myGoalHover = null;
+        myShouldUpdate = true;
+        myStartLifeTime = myLifetime;
+        myHasStartedLowHealthTween = false;
 	}
 
     public void Init(Vector2 aWalkDirection, TileType aTileType)
@@ -53,6 +60,8 @@ public class Tile : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        if (myShouldUpdate == false)
+            return;
 
         Vector2 position = transform.position;
         transform.position = position + myWalDirection * GameManager.DeltaTime;
@@ -67,8 +76,21 @@ public class Tile : MonoBehaviour {
         myLifetime -= GameManager.DeltaTime;
         if (myLifetime <= 0)
         {
-            GameEventManager.GameLost();
+            //GameEventManager.GameLost();
         }
+        else if(myLifetime <= (myStartLifeTime / 2f))
+        {
+            if(myHasStartedLowHealthTween == false)
+            {
+                StartLowHealthTween();
+            }
+        }
+    }
+
+    private void StartLowHealthTween()
+    {
+        myHasStartedLowHealthTween = true;
+        iTween.ScaleTo(gameObject, iTween.Hash("time", 0.6, "scale", new Vector3(1.5f, 1.5f, 1f), "easetype", iTween.EaseType.easeInOutSine, "looptype", iTween.LoopType.pingPong));
     }
 
     void OnTriggerEnter2D(Collider2D aCollider)
@@ -139,6 +161,10 @@ public class Tile : MonoBehaviour {
                 myHasScored = true;
                 transform.position = myGoalHover.transform.position;
                 myGoalHover = null;
+                if(myHasStartedLowHealthTween == true)
+                {
+                    iTween.Stop(gameObject);
+                }
             }
             else
             {
@@ -146,5 +172,10 @@ public class Tile : MonoBehaviour {
             }
         }
         //GetComponent<BoxCollider2D>().enabled = true;
+    }
+
+    public bool ShouldUpdate
+    {
+        set { myShouldUpdate = value; }
     }
 }

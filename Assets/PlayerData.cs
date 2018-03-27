@@ -11,12 +11,21 @@ public class PlayerData : MonoBehaviour
     private void OnEnable()
     {
         GameEventManager.OnGameEvent += OnGmeEvent;
+        GameEventManager.OnGameStateEvent += OnGameStateEvent;
         Init();
     }
 
     private void OnDisable()
     {
         GameEventManager.OnGameEvent -= OnGmeEvent;
+        GameEventManager.OnGameStateEvent -= OnGameStateEvent;
+
+    }
+
+    private void OnGameStateEvent(GameEventManager.GameStateEvent obj)
+    {
+        if (obj.myNewState == GameStateEnum.Playing)
+            myScore = 0;
     }
 
     private void Init()

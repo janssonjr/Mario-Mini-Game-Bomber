@@ -11,6 +11,8 @@ public class GameEventManager : MonoBehaviour {
         public int myScore;
     }
 
+
+
     public class GameStateEvent
     {
         public GameStateEnum myNewState;
@@ -48,4 +50,11 @@ public class GameEventManager : MonoBehaviour {
         if (OnGameEvent != null)
             OnGameEvent.Invoke(new GameEvent { myScoredTile = aTile, myScore = aScoreAmount });
     }
+
+    internal static void Retry()
+    {
+        if (OnGameStateEvent != null)
+            OnGameStateEvent.Invoke(new GameStateEvent { myNewState = GameStateEnum.Playing, myOldState = GameStateEnum.Lose});
+    }
+
 }

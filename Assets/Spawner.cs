@@ -13,6 +13,7 @@ public class Spawner : MonoBehaviour {
 
     public SpawnDirection mySpawnDirection;
     public float mySpawnDelay;
+    private float myOriginalSpawnDeley;
     public GameObject objectToSpawn;
     bool isRunning;
 	// Use this for initialization
@@ -22,8 +23,8 @@ public class Spawner : MonoBehaviour {
 
     private void OnEnable()
     {
+        Init();
         GameEventManager.OnGameStateEvent += OnGameStateChange;
-
     }
 
     private void OnDisable()
@@ -31,15 +32,23 @@ public class Spawner : MonoBehaviour {
         GameEventManager.OnGameStateEvent -= OnGameStateChange;
     }
 
+    void Init()
+    {
+        myOriginalSpawnDeley = mySpawnDelay;
+    }
+
+
     private void OnGameStateChange(GameEventManager.GameStateEvent obj)
     {
         if(obj.myNewState == GameStateEnum.Lose)
         {
             isRunning = false;
+            StopAllCoroutines();
         }
         else if(obj.myNewState == GameStateEnum.Playing)
         {
             isRunning = true;
+            mySpawnDelay = myOriginalSpawnDeley;
             StartCoroutine(Spawn());
         }
     }
@@ -59,10 +68,12 @@ public class Spawner : MonoBehaviour {
             Vector2 walkDirection = GetRandomWalkDirection();
             TileType tileType = (TileType)UnityEngine.Random.Range(0, (int)TileType.Length);
             tile.Init(walkDirection, tileType);
-            if (mySpawnDelay <= 0.5f)
-                mySpawnDelay = 0.5f;
+            if (mySpawnDelay <= 1.2f)
+                mySpawnDelay = 1.2f;
             else
                 mySpawnDelay -= GameManager.DeltaTime * 1;
+
+            GameManager.AddGameObject(tile);
             //isRunning = false;
         }
 
